@@ -11,7 +11,8 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: [SignUpPage(), VerificationPage(), const LoginPage(),],
+        // ignore: prefer_const_literals_to_create_immutables
+        children:<Widget> [const SignUpPage(), const VerificationPage(), const LoginPage(),],
       ),
     );
   }

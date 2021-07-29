@@ -19,85 +19,87 @@ class _WelcomePageState extends State<WelcomePage> {
           future: Future.delayed(const Duration(milliseconds: 3), () {
             return "done";
           }),
-          builder: (context, snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             if (snapshot.hasData) {
-              return Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                Positioned(
-                    top: 116.85,
-                    bottom: percentage(78.44, height(context)),
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: width(context),
-                      height: 49.2,
-                      child: Logo(),
-                    )),
-                Positioned(
-                    top: 208,
-                    height: 45,
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: width(context),
-                      child:const Center(
-                          child: Text(
-                        "Choose your Prefered Language",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
-                        textAlign: TextAlign.center,
-                      )),
-                    )),
-                Positioned(
-                    top: 305,
-                    width: width(context),
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding:const EdgeInsets.symmetric(horizontal: 50),
-                      height: 50,
-                      child: DropdownButton(
-                          underline: Container(
-                            padding:const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: AppColors.primaryColor)),
-                            width: 280,
-                            height: 40,
-                          ),
-                          isExpanded: true,
-                          icon:const Icon(Icons.arrow_downward,
-                              color: Color(0xFFAAD24B)),
-                          onChanged: (value) {
-                            setState(() {
-                              _language = value.toString();
-                            });
-                          },
-                          value: _language,
-                          items: [
-                            for (String language in languages)
-                              DropdownMenuItem(
-                                value: language,
-                                child: Container(
-                                    margin: const EdgeInsets.all(15),
-                                    child: Text(language)),
-                              ),
-                          ]),
-                    )),
-                Positioned(
-                    width: 321,
-                    top: 672,
-                    height: 52,
-                    child: AppButton(
-                        "Get Started",
-                      onPressed: () =>pushReplacement(context,const GetStarted()),
-                    ))
-              ]);
+              return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      children: [
+                        Container(
+                            width: width(context),
+                            margin: const EdgeInsets.only(top: 141),
+                            alignment: Alignment.center,
+                            child:const  Logo(
+                              logowidth: 200,
+                            )),
+                        Container(
+                            alignment: Alignment.center,
+                            width: width(context),
+                            child: Container(
+                                margin: const EdgeInsets.only(top: 30),
+                                child: const Text(
+                                  "Choose your Prefered Language",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                  textAlign: TextAlign.center,
+                                ))),
+                        Container(
+                            width: width(context),
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.symmetric(horizontal: 40)
+                                .add(const EdgeInsets.only(top: 100)),
+                            child: DropdownButton(
+                                underline: Container(
+                                  padding: const EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: AppColors.primaryColor)),
+                                  width: 280,
+                                  height: 40,
+                                ),
+                                isExpanded: true,
+                                icon: Container(margin:const EdgeInsets.only(bottom: 10, right: 5),
+                                  child:const Icon(Icons.arrow_downward,
+                                      color: Color(0xFFAAD24B)),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _language = value.toString();
+                                  });
+                                },
+                                value: _language,
+                                items: [
+                                  for (String language in languages)
+                                    DropdownMenuItem(
+                                      value: language,
+                                      child: Container(
+                                          margin: const EdgeInsets.all(15)
+                                              .subtract(const EdgeInsets.only(
+                                                  top: 10)),
+                                          child: Text(language)),
+                                    ),
+                                ])),
+                      ],
+                    ),
+                    Container(
+                        width: 321,
+                        height: 52,
+                        margin:const EdgeInsets.only(bottom: 50).add(const EdgeInsets.symmetric(horizontal: 30)),
+                        child: AppButton(
+                          "Get Started",
+                          onPressed: () =>
+                              pushReplacement(context, const GetStarted()),
+                        ))
+                  ]);
             } else {
               return Container(
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(
                     bottom: percentage(34.12, width(context)),
                   ),
-                  child: Logo());
+                  child:const  Logo());
             }
           }),
     );

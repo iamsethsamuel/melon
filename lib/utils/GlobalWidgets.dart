@@ -1,26 +1,37 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:melon/utils/functions.dart';
+import "dart:async";
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:melon/utils/functions.dart";
 
 class Logo extends StatelessWidget {
-  Logo({Key? key, this.logowidth}) : super(key: key);
+  const Logo({Key? key, this.logowidth}) : super(key: key);
   final double? logowidth;
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: logowidth ?? width(context),
-        child: Image.asset("assets/images/logo.png"));
+        width: logowidth ?? 60,
+        child: Image.asset(
+          "assets/images/logo.png",
+          width: logowidth ?? 60,
+          scale: 2,
+        ));
   }
 }
 
 abstract class AppColors {
-  static Color primaryColor = Color(0xFFAAD24B);
-  static Color buttonColor = Color(0xFF0B3D48);
-  // static const Acce = MaterialAccentColor();
+  static const Color primaryColor = Color(0xFFAAD24B);
+  static const Color buttonColor = Color(0xFF0B3D48);
+  static const Color fadedPrimary = Color(0xFFF9FFEB);
+  static const Map<int, Color> primaryMaterialColorSwatch = <int, Color>{
+    50: primaryColor,
+    900: primaryColor
+  };
+  static const MaterialColor materialPrimaryColor =
+      MaterialColor(0xFFAAD24B, primaryMaterialColorSwatch);
 }
 
 class MaterialRadio extends StatefulWidget {
-  MaterialRadio(
+  const MaterialRadio(
       {Key? key,
       this.color,
       this.selectColor,
@@ -34,6 +45,7 @@ class MaterialRadio extends StatefulWidget {
   final double? size, radius;
   final bool? disenabled;
   final void Function(bool)? onChange;
+  @override
   MaterialRadioState createState() => MaterialRadioState();
 }
 
@@ -41,13 +53,15 @@ class MaterialRadioState extends State<MaterialRadio> {
   bool selected = false;
   @override
   Widget build(BuildContext context) {
-    if (widget.disenabled!=null) {
+    if (widget.disenabled != null) {
       selected = true;
     }
     return GestureDetector(
       onTap: () {
         setState(() {
-          if(widget.disenabled!=null) selected ? selected = false : selected = true;
+          if (widget.disenabled == null || (widget.disenabled == false)) {
+            selected ? selected = false : selected = true;
+          }
           if (widget.onChange != null) widget.onChange!(selected);
         });
       },
@@ -80,21 +94,194 @@ class MaterialRadioState extends State<MaterialRadio> {
 }
 
 class AppButton extends StatelessWidget {
-  AppButton(this.text, {Key? key, required this.onPressed}) : super(key: key);
+  const AppButton(this.text, {Key? key, required this.onPressed})
+      : super(key: key);
   final void Function() onPressed;
   final String text;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 52,
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      width: width(context),
-      child: ElevatedButton(
-        child: Text(this.text,
-            style: TextStyle(fontSize: 21, fontWeight: FontWeight.w700)),
-        onPressed: this.onPressed,
+    return TextButton(
+      onPressed: onPressed,
+      child: Container(
+        height: 52,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        width: width(context),
+        color: AppColors.buttonColor,
+        child: Text(text,
+            style: const TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.w700,
+                color: Colors.white)),
       ),
     );
+  }
+}
+
+Widget header(BuildContext context, String title) {
+  return Container(
+    margin: const EdgeInsets.only(top: 27, left: 20),
+    child: TextButton(
+        onPressed: () => pop(context),
+        child: Row(
+          children: <Widget>[
+            const Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.buttonColor,
+            ),
+            const Text("Back"),
+            Container(
+              margin: const EdgeInsets.only(left: 57),
+              child: Text(
+                title,
+                style: const TextStyle(
+                    color: AppColors.buttonColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700),
+              ),
+            )
+          ],
+        )),
+  );
+}
+
+class CustomTextField extends StatelessWidget {
+  const CustomTextField(
+      {required this.label,
+      this.controller,
+      this.prefix,
+      this.suffix,
+      this.hint});
+  final String label;
+  final TextEditingController? controller;
+  final Widget? suffix;
+  final Widget? prefix;
+  final String? hint;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: width(context),
+          child: Text(label),
+        ),
+        Container(
+          margin: const EdgeInsets.only(bottom: 20),
+          child: TextFormField(
+            controller: controller,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                suffixStyle: const TextStyle(color: AppColors.primaryColor),
+                prefixStyle: const TextStyle(color: AppColors.primaryColor),
+                prefixIcon: prefix,
+                suffixIcon: suffix),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class CountDown extends StatefulWidget {
+  const CountDown({Key? key, this.style, required this.duration})
+      : super(key: key);
+  final TextStyle? style;
+  final int duration;
+  @override
+  CountDownState createState() => CountDownState();
+}
+
+class CountDownState extends State<CountDown> {
+  late int interval;
+  String time = "";
+  late Timer timer;
+
+  @override
+  void initState() {
+    interval = widget.duration;
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer ti) {
+      interval -= 1;
+      final double minutes = interval / 60;
+      int seconds = interval % 60;
+      seconds > 0 ? seconds -= 1 : seconds = 0;
+      if (interval > 0) {
+        setState(() {
+          time = "${minutes.toInt()}:$seconds";
+        });
+      } else {
+        timer.cancel();
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      time,
+      style: widget.style,
+    );
+  }
+}
+
+class MenuButton extends StatelessWidget {
+  const MenuButton(
+      {required this.header,
+      required this.icon,
+      this.description,
+      required this.route});
+  final String header;
+  final String? description;
+  final IconData icon;
+  final Widget route;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: AppColors.fadedPrimary,
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 30)
+            .add(const EdgeInsets.only(top: 10)),
+        child: TextButton(
+          onPressed: () => push(context, route),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(icon, color: AppColors.primaryColor,),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                width: width(context) / 2,
+                child: Column(
+                  children: [
+                    Container(
+                        width: (width(context) / 2) - 5,
+                        child: Text(
+                          header,
+                          style: const TextStyle(fontSize: 22),
+                        )),
+                    if (description != null)
+                      Container(
+                          width: (width(context) / 2) - 5,
+                          child: Text(
+                            description!,
+                            style: const TextStyle(fontSize: 11),
+                          ))
+                  ],
+                ),
+              ),
+              const RotatedBox(
+                  quarterTurns: 2, child: Icon(Icons.arrow_back_ios,color: AppColors.primaryColor))
+            ],
+          ),
+        ));
   }
 }

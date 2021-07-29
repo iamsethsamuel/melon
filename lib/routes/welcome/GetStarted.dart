@@ -11,102 +11,120 @@ class GetStarted extends StatefulWidget {
 }
 
 class GetStartedState extends State<GetStarted> {
+  final PageController _pageController = PageController();
+  int page = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: PageView(
-      children: [Page1(), Page2(), Page3(), Page4()],
-    ));
-  }
-}
-
-class Page1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Positioned(
-            top: 41,
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+          Container(
+              alignment: Alignment.centerLeft,
+              width: width(context),
+              margin: const EdgeInsets.only(top: 61, left: 30),
+              child: const Logo(
+                logowidth: 114,
+              )),
+          Container(
+            height: (height(context) / 2) + 75,
             width: width(context),
-            right: 120,
-            child: Container(
-                width: 114.79,
-                height: 27.96,
-                margin:const EdgeInsets.only(top: 41, left: 48),
-                child: Logo())),
-        Positioned(
-            left: (width(context) / 2) - 45,
-            top: 0,
-            child: Container(
-              child: Text(
-                "m",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.primaryColor,
-                  fontSize: 529,
-                ),
-              ),
-            )),
-        Positioned(
-            top: 140.52,
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (int currentPage) {
+                setState(() {
+                  page = currentPage;
+                });
+              },
+              children: [Page1(), Page2(), Page3()],
+            ),
+          ),
+          Container(
+            height: 13,
             width: width(context),
-            child: Container(
-                height: 300.96,
-                child: Image.asset("assets/images/vector_black_lady.png"))),
-        Positioned(
-            top: 488,
-            width: width(context),
-            child: Container(
-                child: Text(
-              "Introducing \r\n a Shocking Juicy Platform",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 24,
-                  color: AppColors.primaryColor,
-                  fontWeight: FontWeight.w700),
-            ))),
-        Positioned(
-            top: 556,
-            width: width(context),
-            child: Container(
-                alignment: Alignment.center,
-                margin:const EdgeInsets.symmetric(horizontal: 50),
-                child:const Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit dolor amet enim sed. Eu ante elementum, aenean quis. ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 10),
-                ))),
-        Positioned(
-            top: 613,
-            left: 290,
-            child: Container(
-              height: 13,
-              width: 62,
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              width: 110,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin:const EdgeInsets.only(right: 10),
+                      margin: const EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: index == 0
+                          color: index == page
                               ? AppColors.primaryColor
                               : Colors.grey),
                       height: 13,
                       width: 13,
                     );
                   }),
+            ),
+          ),
+          Container(
+              width: width(context),
+              margin: const EdgeInsets.symmetric(horizontal: 40)
+                  .add(const EdgeInsets.only(bottom: 50)),
+              height: 52,
+              child: AppButton(
+                "Get Started",
+                onPressed: () => pushReplacement(context, LoginSignupPage()),
+              ))
+        ]));
+  }
+}
+
+class Page1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 40),
+          height: 300,
+          width: width(context),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Positioned(
+                  left: (width(context) / 2) - 25,
+                  bottom: 0,
+                  child: Container(
+                    child: Image.asset("assets/images/m.png"),
+                  )),
+              Positioned(
+                  bottom: 0,
+                  child: Container(
+                      height: 300.96,
+                      child:
+                          Image.asset("assets/images/vector_black_lady.png"))),
+            ],
+          ),
+        ),
+        Container(
+            width: width(context),
+            margin: const EdgeInsets.only(top: 30),
+            child: const Text(
+              "Introducing \r\n a Shocking Juicy Platform",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 24,
+                  color: AppColors.primaryColor,
+                  fontWeight: FontWeight.w700),
             )),
-        Positioned(
-            width: 321,
-            top: 672,
-            height: 52,
-            child: AppButton(
-              "Get Started",
-              onPressed: () => pushReplacement(context,const GetStarted()),
-            ))
+        Container(
+            width: width(context),
+            margin: const EdgeInsets.only(top: 14),
+            child: Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.symmetric(horizontal: 50),
+                child: const Text(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit dolor amet enim sed. Eu ante elementum, aenean quis. ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 10),
+                ))),
       ],
     );
   }
@@ -115,89 +133,55 @@ class Page1 extends StatelessWidget {
 class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
+    return Column(
       children: [
-        Positioned(
-            top: 41,
-            right: 120,
+        Container(
+          margin: const EdgeInsets.only(top: 40),
+          height: 300,
+          width: width(context),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Positioned(
+                  bottom: 0,
+                  height: 209,
+                  width: 214,
+                  child: Container(
+                    width: 314,
+                    height: 309,
+                    child: Image.asset("assets/images/e.png"),
+                  )),
+              Positioned(
+                  bottom: 0,
+                  child: Container(
+                      height: 300.96,
+                      child:
+                          Image.asset("assets/images/vector_black_man.png"))),
+            ],
+          ),
+        ),
+        Container(
             width: width(context),
-            child: Container(
-                width: 114.79,
-                height: 27.96,
-                margin:const EdgeInsets.only(top: 41, left: 48),
-                child: Logo())),
-        Positioned(
-            top: 90,
-            left: (width(context) / 3) - 65,
-            child: Container(
-              child: Text(
-                "e",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.primaryColor,
-                  fontSize: 400,
-                ),
-              ),
-            )),
-        Positioned(
-            top: 140.52,
-            width: width(context),
-            child: Container(
-                height: 300.96,
-                child: Image.asset("assets/images/vector_black_man.png"))),
-        Positioned(
-            top: 488,
-            width: width(context),
-            child: Container(
-                child: Text(
+            margin: const EdgeInsets.only(top: 30),
+            child: const Text(
               "Create an Easy Payment \r\n Process",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 24,
                   color: AppColors.primaryColor,
                   fontWeight: FontWeight.w700),
-            ))),
-        Positioned(
-            top: 556,
+            )),
+        Container(
             width: width(context),
+            margin: const EdgeInsets.only(top: 14),
             child: Container(
                 alignment: Alignment.center,
-                margin:const EdgeInsets.symmetric(horizontal: 50),
-                child:const Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit dolor amet enim sed. Eu ante elementum, aenean quis. ",
+                margin: const EdgeInsets.symmetric(horizontal: 50),
+                child: const Text(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit dolor amet enim sed. Eu ante elementum, aenean quis. ",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 10),
                 ))),
-        Positioned(
-            top: 613,
-            left: 290,
-            child: Container(
-              height: 13,
-              width: 62,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin:const EdgeInsets.only(right: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: index == 1
-                              ? AppColors.primaryColor
-                              : Colors.grey),
-                      height: 13,
-                      width: 13,
-                    );
-                  }),
-            )),
-        Positioned(
-            width: 321,
-            top: 672,
-            height: 52,
-            child: AppButton(
-              "Get Started",
-              onPressed: () => pushReplacement(context,const GetStarted()),
-            ))
       ],
     );
   }
@@ -206,123 +190,89 @@ class Page2 extends StatelessWidget {
 class Page3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
+    return Column(
       children: [
-        Positioned(
-            top: 41,
-            right: 120,
+        Container(
+          margin: const EdgeInsets.only(top: 40),
+          height: 300,
+          width: width(context),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Positioned(
+                  bottom: 0,
+                  height: 209,
+                  width: 214,
+                  left: 30,
+                  child: Container(
+                    width: 314,
+                    height: 309,
+                    child: Image.asset("assets/images/n.png"),
+                  )),
+              Positioned(
+                  bottom: 0,
+                  child: Container(
+                      height: 300.96,
+                      child: Image.asset(
+                          "assets/images/vector_black_lady_1.png"))),
+            ],
+          ),
+        ),
+        Container(
             width: width(context),
-            child: Container(
-                width: 114.79,
-                height: 27.96,
-                margin:const EdgeInsets.only(top: 41, left: 48),
-                child: Logo())),
-        Positioned(
-            top: 90,
-            left: (width(context) / 3) - 65,
-            child: Container(
-              child: Text(
-                "n",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.primaryColor,
-                  fontSize: 400,
-                ),
-              ),
-            )),
-        Positioned(
-            top: 140.52,
-            width: width(context),
-            child: Container(
-                height: 300.96,
-                child: Image.asset("assets/images/vector_black_lady_1.png"))),
-        Positioned(
-            top: 488,
-            width: width(context),
-            child: Container(
-                child: Text(
+            margin: const EdgeInsets.only(top: 30),
+            child: const Text(
               "Amazing Settings to make \n\r it easy",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 24,
                   color: AppColors.primaryColor,
                   fontWeight: FontWeight.w700),
-            ))),
-        Positioned(
-            top: 556,
+            )),
+        Container(
             width: width(context),
+            margin: const EdgeInsets.only(top: 14),
             child: Container(
                 alignment: Alignment.center,
-                margin:const EdgeInsets.symmetric(horizontal: 50),
-                child:const Text(
+                margin: const EdgeInsets.symmetric(horizontal: 50),
+                child: const Text(
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit dolor amet enim sed. Eu ante elementum, aenean quis. ",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 10),
                 ))),
-        Positioned(
-            top: 613,
-            left: 290,
-            child: Container(
-              height: 13,
-              width: 62,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin:const EdgeInsets.only(right: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: index == 2
-                              ? AppColors.primaryColor
-                              : Colors.grey),
-                      height: 13,
-                      width: 13,
-                    );
-                  }),
-            )),
-        Positioned(
-            width: 321,
-            top: 672,
-            height: 52,
-            child: AppButton(
-              "Get Started",
-              onPressed: () => pushReplacement(context,const GetStarted()),
-            ))
       ],
     );
   }
 }
 
-class Page4 extends StatelessWidget {
+class LoginSignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Positioned(
-            top: 102.27,
-            child: Container(height: 27.96, width: 114.79, child: Logo())),
-        Positioned(
-            top: 172,
-            child: Text(
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+                margin: const EdgeInsets.only(top: 100),
+                height: 27.96,
+                width: 114.79,
+                child: const Logo()),
+            const Text(
               "Choose Account Type",
               style: TextStyle(fontSize: 20, color: AppColors.buttonColor),
-            )),
-        Positioned(
-            top: 237.8,
-            child: Container(
+            ),
+            Container(
               width: 290,
               height: 151,
-              padding:const EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   color: AppColors.primaryColor),
               child: Column(
                 children: [
                   Container(
-                    child:const Text(
+                    child: const Text(
                       "Personal Account",
                       style: TextStyle(
                           color: Colors.white,
@@ -331,8 +281,8 @@ class Page4 extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin:const EdgeInsets.only(top: 10),
-                    child: Text(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: const Text(
                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit dolor amet enim sed. Eu ante elementum, aenean quis. ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -343,13 +293,11 @@ class Page4 extends StatelessWidget {
                   ),
                 ],
               ),
-            )),
-        Positioned(
-            top: 407.8,
-            child: Container(
+            ),
+            Container(
               width: 290,
               height: 151,
-              padding:const EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.primaryColor),
@@ -357,7 +305,7 @@ class Page4 extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    child: Text(
+                    child: const Text(
                       "Business Account",
                       style: TextStyle(
                           color: AppColors.buttonColor,
@@ -366,8 +314,8 @@ class Page4 extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin:const EdgeInsets.only(top: 10),
-                    child: Text(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: const Text(
                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit dolor amet enim sed. Eu ante elementum, aenean quis. ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -378,39 +326,42 @@ class Page4 extends StatelessWidget {
                   ),
                 ],
               ),
-            )),
-        Positioned(
-            width: width(context),
-            top: 588,
-            child: Container(
+            ),
+            Container(
               width: width(context),
-              padding:const EdgeInsets.symmetric(horizontal: 10),
-              child: ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(primary: AppColors.primaryColor),
-                onPressed: () => pushReplacement(context,const AuthPage()),
-                child: const Text(
-                  "Log in Account",
-                  style: TextStyle(fontWeight: FontWeight.w700),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                color: AppColors.primaryColor,
+                alignment: Alignment.center,
+                height: 45,
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                margin: const EdgeInsets.symmetric(horizontal: 14),
+                child: GestureDetector(
+                  onTap: () => pushReplacement(context, const AuthPage()),
+                  child: const Text(
+                    "Log in Account",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700, color: Colors.white),
+                  ),
                 ),
               ),
-            )),
-        Positioned(
-          top: 656.8,
-          child: Container(
-            width: 249,
-            margin:const EdgeInsets.only(top: 10),
-            child: Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit dolor amet enim sed. Eu ante elementum, aenean quis. ",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.buttonColor),
             ),
-          ),
-        )
-      ],
+            Container(
+              width: 249,
+              margin: const EdgeInsets.only(bottom: 50)
+                  .add(const EdgeInsets.symmetric(horizontal: 30)),
+              child: const Text(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suscipit dolor amet enim sed. Eu ante elementum, aenean quis. ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.buttonColor),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

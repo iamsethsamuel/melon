@@ -1,5 +1,9 @@
 include: package:lint/analysis_options.yaml
-
+analyzer:
+  exclude: [routes/routes/home/HomePage.dart]
+  language:
+    strict-raw-types: false
+    
 linter:
   rules:
     # ------ Disable individual rules ----- #
@@ -14,8 +18,9 @@ linter:
     avoid_classes_with_only_static_members: false
     always_specify_types: false
     sized_box_for_whitespace: false
-    
-    
+    avoid_print: false
+    argument_type_not_assignable: false
+    sort_pub_dependencies: false
     # ------ Enable individual rules ------ #
     #                 ---                   #
     # These rules here are good but too     #
@@ -26,13 +31,14 @@ linter:
     sort_constructors_first: true
 
     avoid_unnecessary_containers: false
-
+    const_with_non_const: false
+    invalid_constant: true
     # The new tabs vs. spaces. Choose wisely
     prefer_double_quotes: true
 
     # Good packages document everything
     public_member_api_docs: false
     
-  
+    omit_local_variable_types: false  
 
     file_names: false

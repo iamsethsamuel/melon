@@ -1,6 +1,6 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import "package:melon/routes/user/auth/AuthPage.dart";
+import 'package:melon/routes/user/auth/LoginPage.dart';
 import "package:melon/utils/GlobalWidgets.dart";
 import "package:melon/utils/functions.dart";
 
@@ -67,10 +67,9 @@ class GetStartedState extends State<GetStarted> {
               width: width(context),
               margin: const EdgeInsets.symmetric(horizontal: 40)
                   .add(const EdgeInsets.only(bottom: 50)),
-              height: 52,
               child: AppButton(
                 "Get Started",
-                onPressed: () => pushReplacement(context, LoginSignupPage()),
+                onPressed: () => push(context, LoginSignupPage()),
               ))
         ]));
   }
@@ -337,7 +336,7 @@ class LoginSignupPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 50),
                 margin: const EdgeInsets.symmetric(horizontal: 14),
                 child: GestureDetector(
-                  onTap: () => pushReplacement(context, const AuthPage()),
+                  onTap: () => pushReplacement(context, const LoginPage()),
                   child: const Text(
                     "Log in Account",
                     style: TextStyle(

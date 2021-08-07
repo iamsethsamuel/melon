@@ -30,7 +30,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             width: width(context),
                             margin: const EdgeInsets.only(top: 141),
                             alignment: Alignment.center,
-                            child:const  Logo(
+                            child: const Logo(
                               logowidth: 200,
                             )),
                         Container(
@@ -60,8 +60,10 @@ class _WelcomePageState extends State<WelcomePage> {
                                   height: 40,
                                 ),
                                 isExpanded: true,
-                                icon: Container(margin:const EdgeInsets.only(bottom: 10, right: 5),
-                                  child:const Icon(Icons.arrow_downward,
+                                icon: Container(
+                                  margin: const EdgeInsets.only(
+                                      bottom: 10, right: 5),
+                                  child: const Icon(Icons.arrow_downward,
                                       color: Color(0xFFAAD24B)),
                                 ),
                                 onChanged: (value) {
@@ -85,12 +87,12 @@ class _WelcomePageState extends State<WelcomePage> {
                     ),
                     Container(
                         width: 321,
-                        height: 52,
-                        margin:const EdgeInsets.only(bottom: 50).add(const EdgeInsets.symmetric(horizontal: 30)),
+                        margin: const EdgeInsets.only(bottom: 50)
+                            .add(const EdgeInsets.symmetric(horizontal: 30)),
                         child: AppButton(
                           "Get Started",
                           onPressed: () =>
-                              pushReplacement(context, const GetStarted()),
+                              push(context, const GetStarted()),
                         ))
                   ]);
             } else {
@@ -99,7 +101,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   margin: EdgeInsets.only(
                     bottom: percentage(34.12, width(context)),
                   ),
-                  child:const  Logo());
+                  child: const Logo());
             }
           }),
     );

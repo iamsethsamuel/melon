@@ -96,7 +96,7 @@ class AirtimePurchase extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 30).add(const EdgeInsets.only(bottom: 100)),
               child: Column(
                 children: [
-                  const CustomTextField(label: "Enter Amount",hint: "0.00",),
+                  CustomTextField(label: "Enter Amount",hint: "0.00",),
                   CustomTextField(
                     label: "Bank",
                     hint: "Choose Network",
@@ -110,7 +110,7 @@ class AirtimePurchase extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const CustomTextField(label: "Phone number"),
+                  CustomTextField(label: "Phone number"),
                 ],
               ),
             ),

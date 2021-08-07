@@ -94,10 +94,12 @@ class MaterialRadioState extends State<MaterialRadio> {
 }
 
 class AppButton extends StatelessWidget {
-  const AppButton(this.text, {Key? key, required this.onPressed})
+  const AppButton(this.text,
+      {Key? key, required this.onPressed, this.disenabled})
       : super(key: key);
-  final void Function() onPressed;
+  final VoidCallback? onPressed;
   final String text;
+  final bool? disenabled;
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +110,9 @@ class AppButton extends StatelessWidget {
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         width: width(context),
-        color: AppColors.buttonColor,
+        color: disenabled != null && disenabled == true
+            ? AppColors.buttonColor.withOpacity(.3)
+            : AppColors.buttonColor,
         child: Text(text,
             style: const TextStyle(
                 fontSize: 21,
@@ -152,12 +156,20 @@ class CustomTextField extends StatelessWidget {
       this.controller,
       this.prefix,
       this.suffix,
-      this.hint});
+      this.hint,
+      this.onTap,
+      this.readOnly,
+      this.textCapitalization, this.textInputType});
   final String label;
   final TextEditingController? controller;
   final Widget? suffix;
   final Widget? prefix;
   final String? hint;
+  final bool? readOnly;
+  final GestureTapCallback? onTap;
+  final TextCapitalization? textCapitalization;
+  final TextInputType? textInputType;
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -169,11 +181,15 @@ class CustomTextField extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(bottom: 20),
           child: TextFormField(
+            readOnly: readOnly ?? false,
             controller: controller,
-            keyboardType: TextInputType.number,
+            onTap: onTap,
+            textCapitalization: textCapitalization ?? TextCapitalization.words,
+            keyboardType: textInputType,
             decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                hintStyle:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 suffixStyle: const TextStyle(color: AppColors.primaryColor),
                 prefixStyle: const TextStyle(color: AppColors.primaryColor),
                 prefixIcon: prefix,
@@ -256,7 +272,10 @@ class MenuButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(icon, color: AppColors.primaryColor,),
+              Icon(
+                icon,
+                color: AppColors.primaryColor,
+              ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 width: width(context) / 2,
@@ -279,9 +298,44 @@ class MenuButton extends StatelessWidget {
                 ),
               ),
               const RotatedBox(
-                  quarterTurns: 2, child: Icon(Icons.arrow_back_ios,color: AppColors.primaryColor))
+                  quarterTurns: 2,
+                  child:
+                      Icon(Icons.arrow_back_ios, color: AppColors.primaryColor))
             ],
           ),
         ));
+  }
+}
+
+class ErrorPage extends StatelessWidget {
+  const ErrorPage({required this.message, required this.page});
+  final Widget page;
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                  margin: EdgeInsets.only(top: height(context) / 3),
+                  child: Text(
+                    message,
+                    style: const TextStyle(fontSize: 20),
+                  )),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 30)
+                    .add(const EdgeInsets.only(bottom: 30)),
+                child: AppButton("Try again",
+                    onPressed: () => push(context, page)),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

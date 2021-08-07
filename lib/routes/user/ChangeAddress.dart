@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import "package:flutter/material.dart";
+import 'package:melon/models/models.dart';
 import "package:melon/utils/GlobalWidgets.dart";
+import 'package:melon/utils/data.dart';
 import "package:melon/utils/functions.dart";
+import "package:provider/provider.dart";
 
 class ChangeAddress extends StatefulWidget {
   const ChangeAddress({Key? key}) : super(key: key);
@@ -9,8 +14,20 @@ class ChangeAddress extends StatefulWidget {
 }
 
 class ChangeAddressState extends State<ChangeAddress> {
+  final street = TextEditingController(),
+      city = TextEditingController(),
+      state = TextEditingController(),
+      country = TextEditingController(text: "Nigeria");
+  bool firstBuild = true;
   @override
   Widget build(BuildContext context) {
+        if (firstBuild) {
+      city.text = context.read<UserModel>().user.city.toString();
+      state.text = context.read<UserModel>().user.state.toString();
+      street.text = context.read<UserModel>().user.street.toString();
+      firstBuild = false;
+    }
+
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -45,11 +62,48 @@ class ChangeAddressState extends State<ChangeAddress> {
               padding: const EdgeInsets.all(30),
               child: Column(
                 children: <Widget>[
-                  const CustomTextField(label: "Street"),
-                  const CustomTextField(label: "City"),
-                  const CustomTextField(label: "State"),
+                  CustomTextField(
+                    label: "Street",
+                    controller: street,
+                  ),
+                  CustomTextField(
+                    label: "City",
+                    controller: city,
+                  ),
+                  CustomTextField(
+                    label: "State",
+                    controller: state,
+                    readOnly: true,
+                    onTap: () {
+                      showSnackBar(
+                          context,
+                          Container(
+                            width: width(context),
+                            height: height(context) / 3,
+                            child: ListView.builder(
+                                itemCount: states.length,
+                                itemBuilder: (_, index) {
+                                  return TextButton(
+                                    onPressed: () {
+                                      state.text = states[index];
+                                      removeSnackBar(context);
+                                    },
+                                    child: Text(
+                                      states[index],
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  );
+                                }),
+                          ),
+                          duration: const Duration(days: 1));
+                    },
+                  ),
                   CustomTextField(
                     label: "Country",
+                    readOnly: true,
+                    controller: country,
                     suffix: TextButton(
                         style: TextButton.styleFrom(
                             primary: AppColors.primaryColor),
@@ -72,7 +126,29 @@ class ChangeAddressState extends State<ChangeAddress> {
                   .add(const EdgeInsets.symmetric(horizontal: 30)),
               child: AppButton(
                 "Complete",
-                onPressed: () {},
+                onPressed: () {
+                  activityIndicator(context);
+                  postRequest(context, "/updateuser", {
+                    "street": street.text,
+                    "city": city.text,
+                    "state": state.text,
+                    "country": country.text,
+                    "type": "address",
+                  }).then((value) {
+                    final Map res = jsonDecode(value.data.toString()) as Map;
+                    if (res["data"] != null) {
+                      context.read<UserModel>().login(
+                            res["data"] as Map<String, dynamic>,
+                          );
+                      showSnackBar(context, "Address updated successfully");
+                    } else {
+                      showSnackBar(context, res["err"]);
+                    }
+                  }).catchError((err) {
+                    print(err);
+                    showSnackBar(context, "Sorry an error occurred");
+                  });
+                },
               ),
             )
           ],

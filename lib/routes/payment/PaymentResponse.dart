@@ -71,10 +71,11 @@ class PaymentResponse extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      Container(height: 73,child: Image.asset("assets/images/vector_happy_money.png"),),
                       Column(
                         children:const  <Widget>[
                           Text("2% Cashback"),
-                          Text("#1,000.00")
+                          Text("#1,000.00", style: TextStyle(fontWeight: FontWeight.bold),)
                         ],
                       )
                     ],

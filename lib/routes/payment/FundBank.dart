@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import "package:melon/utils/GlobalWidgets.dart";
 import "package:melon/utils/functions.dart";
 
@@ -21,7 +22,7 @@ class _FundBankState extends State<FundBank> {
               children: [
                 header(context, "Bank Transfer"),
                 Container(
-                  margin:const EdgeInsets.all(30),
+                  margin: const EdgeInsets.all(30),
                   child: const Text(
                     "Fund your melon account by simply transfering from any bank all you need is to supply the details below.",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -31,7 +32,7 @@ class _FundBankState extends State<FundBank> {
                   margin: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
-                      const CustomTextField(
+                      CustomTextField(
                         label: "Bank",
                         hint: "Kuda Bank",
                       ),
@@ -69,7 +70,14 @@ class _FundBankState extends State<FundBank> {
                 .add(const EdgeInsets.symmetric(horizontal: 30)),
             child: AppButton(
               "Copy Full Details",
-              onPressed: () {},
+              onPressed: () {
+                Clipboard.setData(const ClipboardData(text: """
+Bank name: Kuda Bank 
+Account Number: xxx-xxx
+Account Name: John Doe 
+"""));
+                showSnackBar(context, "Account Details Copied");
+              },
             ),
           )
         ])));

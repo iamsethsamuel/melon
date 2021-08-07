@@ -1,7 +1,11 @@
+import "dart:convert";
+
 import "package:flutter/material.dart";
+import "package:melon/main.dart";
 import "package:melon/models/models.dart";
 import "package:melon/routes/home/HomePage.dart";
 import "package:melon/routes/home/SecurityPage.dart";
+import "package:melon/routes/user/auth/LoginPage.dart";
 import "package:melon/utils/GlobalWidgets.dart";
 import "package:melon/utils/data.dart";
 import "package:melon/utils/functions.dart";
@@ -10,6 +14,10 @@ import "package:provider/provider.dart";
 class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final String accountType =
+        context.read<UserModel>().user.accountType == "Business"
+            ? "Personal"
+            : "Business";
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -33,6 +41,9 @@ class Menu extends StatelessWidget {
                 } else if (i == 3) {
                   showSnackBar(context, const SecurityPage(),
                       duration: const Duration(days: 1));
+                } else if (i == 8) {
+                  storage.deleteAll().then(
+                      (value) => pushReplacement(context, const LoginPage()));
                 } else {
                   push(context, menuPageRoute[i]);
                 }
@@ -62,7 +73,26 @@ class Menu extends StatelessWidget {
           child: TextButton(
             style: TextButton.styleFrom(primary: AppColors.primaryColor),
             onPressed: () {
-              context.read<UserModel>().switchAccountType();
+              activityIndicator(context);
+              postRequest(context, "/updateuser", {
+                "accounttype": accountType,
+                "type": "accounttype",
+              }).then((value) {
+                final Map res = jsonDecode(value.data.toString()) as Map;
+                if (res["data"] != null) {
+                  context.read<UserModel>().login(
+                        res["data"] as Map<String, dynamic>,
+                      );
+                  showSnackBar(
+                      context, "Switched to $accountType account successfully");
+                  push(context, MyApp());
+                } else {
+                  showSnackBar(context, res["err"]);
+                }
+              }).catchError((err) {
+                print(err);
+                showSnackBar(context, "Sorry an error occurred");
+              });
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,7 +109,7 @@ class Menu extends StatelessWidget {
                           TextStyle(fontSize: 16, color: AppColors.buttonColor),
                     ),
                     Text(
-                      context.read<UserModel>().user.accountType == "Business"?"Personal":"Business",
+                      accountType,
                       style: const TextStyle(fontSize: 16, color: Colors.white),
                     )
                   ],

@@ -117,14 +117,14 @@ List<Map<String, Widget>> menu = <Map<String, Widget>>[
 
 final List<Widget> menuPageRoute = <Widget>[
   AccountProfile(),
- const  PaymentsHistory(),
- const  Rewards(),
+  const PaymentsHistory(),
+  const Rewards(),
   Container(),
   const HelpPage(),
   const BioMetrics(),
   LanguagePage(),
   LegalPage(),
- const  LoginPage()
+  const LoginPage()
 ];
 
 final List<Widget> profilePageRoutes = <Widget>[
@@ -146,14 +146,6 @@ List<IconData> acountPageIcons = <IconData>[
 ];
 
 List<Widget> acountPageRoute = <Widget>[];
-List<Map<String, String>> accontPageText = <Map<String, String>>[
-  {"title": "John Doe", "text": "Account Name"},
-  {"title": "Location", "text": "Address"},
-  {"title": "+2436284994778", "text": "Phone Number"},
-  {"title": "Johndoe@email.com", "text": "Email Address"},
-  {"title": "Document", "text": "Verification Document"},
-  {"title": "John Dophin", "text": "Next of Kin"},
-];
 
 List<String> menuItems = <String>["Scan", "Payment", "Fund", "Save"];
 
@@ -171,22 +163,62 @@ List<Widget> menuRoute = <Widget>[
   Container()
 ];
 List<Map<String, dynamic>> bankTransferData = <Map<String, dynamic>>[
-  {"bank":"Zenith Bank", "name":"Kola Alapomeji..."},
-  {"bank":"Zenith Bank", "name":"Rafiu Malik..."},
-  {"bank":"Zenith Bank", "name":"Kola Alapomeji..."},
-  {"bank":"Zenith Bank", "name":"Kola Alapomeji..."}
+  {"bank": "Zenith Bank", "name": "Kola Alapomeji..."},
+  {"bank": "Zenith Bank", "name": "Rafiu Malik..."},
+  {"bank": "Zenith Bank", "name": "Kola Alapomeji..."},
+  {"bank": "Zenith Bank", "name": "Kola Alapomeji..."}
 ];
 
 List<Map<String, dynamic>> airtimeData = <Map<String, dynamic>>[
-  {"network":"airtel", "number":"08134859030"},
-  {"network":"airtel", "number":"08134859030"},
-  {"network":"airtel", "number":"08134859030"},
-  {"network":"airtel", "number":"08134859030"},
+  {"network": "airtel", "number": "08134859030"},
+  {"network": "airtel", "number": "08134859030"},
+  {"network": "airtel", "number": "08134859030"},
+  {"network": "airtel", "number": "08134859030"},
 ];
 
 List<Map<String, dynamic>> tvData = <Map<String, dynamic>>[
-  {"provider":"dstv", "number":"08134859030"},
-  {"provider":"dstv", "number":"08134859030"},
-  {"provider":"dstv", "number":"08134859030"},
-  {"provider":"dstv", "number":"08134859030"},
+  {"provider": "dstv", "number": "08134859030"},
+  {"provider": "dstv", "number": "08134859030"},
+  {"provider": "dstv", "number": "08134859030"},
+  {"provider": "dstv", "number": "08134859030"},
+];
+
+List<String> states = [
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "FCT - Abuja",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara"
 ];

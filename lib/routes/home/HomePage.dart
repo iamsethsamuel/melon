@@ -18,7 +18,6 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     page=widget.page ?? 0;
-
     super.initState();
   }
   @override

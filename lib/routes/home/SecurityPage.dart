@@ -4,7 +4,7 @@ import "package:melon/utils/functions.dart";
 
 class SecurityPage extends StatefulWidget {
   const SecurityPage({Key? key, this.action}) : super(key: key);
-  final Future<void> Function()? action;
+  final Function()? action;
   @override
   SecurityPageState createState() => SecurityPageState();
 }
@@ -28,7 +28,7 @@ class SecurityPageState extends State<SecurityPage> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      height: height(context) / 2,
+      height: height(context) / 2+20,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -83,14 +83,8 @@ class SecurityPageState extends State<SecurityPage> {
                 Icons.fingerprint,
                 size: 66,
               )),
-          AppButton("Send", onPressed: () {
-            if (widget.action != null) {
-              removeSnackBar(context);
-              widget.action!();
-            } else {
-              removeSnackBar(context);
-            }
-          })
+          AppButton("Send",onPressed: widget.action
+          )
         ],
       ),
     );

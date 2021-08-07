@@ -1,7 +1,7 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import 'package:melon/routes/payment/ConfirmPayment.dart';
-import 'package:melon/routes/payment/PaymentPage.dart';
+import "package:melon/routes/payment/ConfirmPayment.dart";
+import "package:melon/routes/payment/PaymentPage.dart";
 import "package:melon/utils/GlobalWidgets.dart";
 import "package:melon/utils/data.dart";
 import "package:melon/utils/functions.dart";
@@ -102,7 +102,7 @@ class BankTransfer extends StatelessWidget {
                   .add(const EdgeInsets.only(bottom: 60)),
               child: Column(
                 children: [
-                  const CustomTextField(label: "Enter Amount",hint: "0.00",),
+                  CustomTextField(label: "Enter Amount",hint: "0.00",),
                   CustomTextField(
                     label: "Bank",
                     hint: "Choose Bank",
@@ -116,8 +116,8 @@ class BankTransfer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const CustomTextField(label: "Account Number"),
-                  const CustomTextField(label: "Description"),
+                  CustomTextField(label: "Account Number"),
+                  CustomTextField(label: "Description"),
                 ],
               ),
             ),
@@ -130,8 +130,8 @@ class BankTransfer extends StatelessWidget {
                     context,
                     Container(height: (height(context)/2)+90,
                       child: const ConfirmPayment(
-                        user: "Ridwan Olumide",
-                        amount: "2000",
+                        data:{"user": "Ridwan Olumide",
+                        "amount": "2000",}
                       ),
                     ),duration: const Duration(days: 1)),
               ),

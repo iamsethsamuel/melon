@@ -1,18 +1,24 @@
+import 'dart:convert';
+
 import "package:flutter/material.dart";
+import 'package:melon/classes/classes.dart';
+import 'package:melon/models/models.dart';
 import "package:melon/routes/home/SecurityPage.dart";
 import "package:melon/utils/GlobalWidgets.dart";
 import "package:melon/utils/functions.dart";
+import "package:provider/provider.dart";
 
 class ConfirmPayment extends StatelessWidget {
-  const ConfirmPayment({Key? key, required this.amount, required this.user})
+  const ConfirmPayment({Key? key, required this.data, this.widgetcontext})
       : super(key: key);
-  final String amount, user;
+  final Map data;
+  final BuildContext? widgetcontext;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width(context),
-      height: (height(context) / 2) + 72,
+      height: (height(context) / 2) + 100,
       child: Column(
         children: <Widget>[
           Container(
@@ -33,10 +39,12 @@ class ConfirmPayment extends StatelessWidget {
               children: <Widget>[
                 Container(
                   width: width(context),
-                  child: const Text(
-                    "#1,000,000.00",
+                  child: Text(
+                    (context.read<WalletModel>().wallet.balance! -
+                            int.parse(data["amount"].toString()))
+                        .toString(),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                       color: AppColors.buttonColor,
                     ),
@@ -73,7 +81,7 @@ class ConfirmPayment extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       color: AppColors.fadedPrimary,
                       child: Text(
-                        user,
+                        data["name"].toString(),
                         style: const TextStyle(
                             fontSize: 16, color: AppColors.buttonColor),
                       ),
@@ -92,7 +100,7 @@ class ConfirmPayment extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       color: AppColors.fadedPrimary,
                       child: Text(
-                        "# $amount",
+                        "# ${data["amount"]}",
                         style: const TextStyle(
                           fontSize: 16,
                           color: AppColors.buttonColor,
@@ -125,10 +133,10 @@ class ConfirmPayment extends StatelessWidget {
                     ),
                     Container(
                       width: width(context),
-                      child: const Text(
-                        "Susan Huil",
+                      child: Text(
+                        context.read<UserModel>().user.name.toString(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 21,
                           color: AppColors.buttonColor,
                         ),
@@ -168,8 +176,26 @@ class ConfirmPayment extends StatelessWidget {
           Container(
               margin: const EdgeInsets.only(top: 40),
               child: AppButton("Make Payment", onPressed: () {
-                showSnackBar(context, const SecurityPage(),
-                    duration: const Duration(days: 1));
+                showSnackBar(widgetcontext!, SecurityPage(
+                  action: () {
+                    activityIndicator(widgetcontext!);
+                    postRequest(widgetcontext!, "/sendmoney", data)
+                        .then((value) {
+                      final Map res = jsonDecode(value.data.toString()) as Map;
+                      if (res["data"] != null) {
+                        showSnackBar(widgetcontext!, "Payment successful");
+                        widgetcontext!
+                            .read<WalletModel>()
+                            .getWallet(res["data"] as Map<String, dynamic>);
+                      } else {
+                        showSnackBar(widgetcontext!, res["err"]);
+                      }
+                    }).catchError((err) {
+                      print(err);
+                      showSnackBar(widgetcontext!, "Sorry an error occurred");
+                    });
+                  },
+                ), duration: const Duration(days: 1));
               }))
         ],
       ),

@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter/rendering.dart";
 import "package:melon/routes/business/BussinessHome.dart";
 import "package:melon/routes/business/GenerateQRCode.dart";
-import "package:melon/routes/business/QRCodePage.dart";
+import 'package:melon/routes/payment/QRCodePage.dart';
 import "package:melon/routes/home/Menu.dart";
 import "package:melon/utils/GlobalWidgets.dart";
 import "package:melon/utils/functions.dart";
@@ -19,7 +19,7 @@ class BusinessHomePageState extends State<BusinessHomePage> {
   List<Widget> pages = <Widget>[
     const BusinessHome(),
     Container(),
-    QRCodePage(),
+    QRCodePage(amount: 0,),
     GenerateQRCode(),
     Menu()
   ];
@@ -36,7 +36,7 @@ class BusinessHomePageState extends State<BusinessHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           if (index == 2) {
-            push(context, QRCodePage());
+            push(context, QRCodePage(amount: 0,));
             return;
           }
           if (index == 3) {
